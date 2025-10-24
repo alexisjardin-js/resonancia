@@ -20,7 +20,8 @@ export const VideoScreen = ({ videoUrl, width = 16, height = 9 }: VideoScreenPro
     const video = document.createElement('video');
     video.src = videoUrl;
     video.loop = true;
-    video.muted = true;
+    video.muted = false;
+    video.volume = 0.6; // Volumen al 60%
     video.playsInline = true;
     video.autoplay = true;
     video.style.display = 'none';
