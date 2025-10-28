@@ -63,10 +63,8 @@ export const PlaylistSidebar = ({ tracks, currentTrack, onTrackSelect }: Playlis
       {/* Header */}
       <div className="p-4 border-b border-gray-800 flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-linear-to-br from-purple-500 to-blue-500 rounded flex items-center justify-center">
-            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
-            </svg>
+          <div className="w-18 h-18 bg-linear-to-br from-purple-500 to-blue-500 rounded flex items-center justify-center">
+            <img src="/images/playlist.jpeg" alt="Logo Resonancia" className="w-16 h-16" />
           </div>
           <div>
             <h2 className="text-white font-semibold text-sm">Resonancia-Playlist</h2>
