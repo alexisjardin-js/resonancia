@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Track {
   id: string;
@@ -17,7 +17,23 @@ interface PlaylistSidebarProps {
 }
 
 export const PlaylistSidebar = ({ tracks, currentTrack, onTrackSelect }: PlaylistSidebarProps) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  // Detectar móvil y empezar cerrado en dispositivos pequeños
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const [isCollapsed, setIsCollapsed] = useState(isMobile);
+
+  // Manejar cambios de tamaño de ventana (rotación de dispositivo, etc.)
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobileNow = window.innerWidth < 768;
+      // Solo auto-colapsar si cambia de desktop a móvil y no estaba ya colapsado por elección del usuario
+      if (!isMobile && isMobileNow) {
+        setIsCollapsed(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobile]);
 
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -45,15 +61,29 @@ export const PlaylistSidebar = ({ tracks, currentTrack, onTrackSelect }: Playlis
           </div>
         </div>
 
-        {/* Floating button for mobile and desktop */}
-        <button
-          onClick={() => setIsCollapsed(false)}
-          className="fixed lg:hidden top-4 right-4 z-40 bg-black/80 hover:bg-black text-white p-3 rounded-full shadow-lg border border-gray-700 backdrop-blur-sm transition-colors"
-          aria-label="Abrir playlist">
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
-          </svg>
-        </button>
+        {/* Floating button for mobile and desktop with pulse animation */}
+        <div className="fixed lg:hidden top-4 right-4 z-40 flex flex-col items-center">
+          <button
+            onClick={() => setIsCollapsed(false)}
+            className="relative bg-black/80 hover:bg-black text-white p-3 rounded-full shadow-lg border border-gray-700 backdrop-blur-sm transition-colors group"
+            aria-label="Abrir playlist">
+            {/* Pulse animation rings */}
+            <div className="absolute inset-0 rounded-full bg-green-500/30 animate-ping"></div>
+            <div className="absolute inset-0 rounded-full bg-green-500/20 animate-pulse"></div>
+
+            {/* Button content */}
+            <div className="relative z-10">
+              <svg className="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+              </svg>
+            </div>
+          </button>
+
+          {/* Label */}
+          <div className="mt-2 px-2 py-1 bg-black/80 text-white text-xs rounded-md border border-gray-700 backdrop-blur-sm">
+            <span className="text-green-400">♪</span> Abrir Playlist
+          </div>
+        </div>
       </>
     );
   }

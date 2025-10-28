@@ -109,10 +109,10 @@ export const App = () => {
   return (
     <>
       <div className="w-full h-screen overflow-hidden relative">
-        {/* Fondo con parallax: video en loop */}
+        {/* Fondo con parallax: video en loop - responsive container */}
         <div
           ref={backgroundRef}
-          className="absolute inset-0 w-full h-full z-0 will-change-transform"
+          className="absolute inset-0 w-full h-[calc(100vh-80px)] md:h-full z-0 will-change-transform"
           style={{
             transition: 'transform 0.1s ease-out',
             transformOrigin: 'center center',
@@ -138,7 +138,7 @@ export const App = () => {
         </div> */}
 
         {/* Instrucciones */}
-        <div className="absolute bottom-28 left-4 right-4 md:right-[400px] z-20 bg-black/80 text-white p-3 rounded-lg text-center text-sm">
+        <div className="absolute bottom-4 md:bottom-28 left-4 right-4 md:right-[400px] z-20 bg-black/80 text-white p-3 rounded-lg text-center text-sm">
           <p className="hidden md:block">
             🖱️ Mueve el mouse para cambiar la perspectiva de la cámara y el parallax del fondo
           </p>
