@@ -6,9 +6,15 @@ interface VideoScreenProps {
   videoUrl: string;
   width?: number;
   height?: number;
+  position?: [number, number, number];
 }
 
-export const VideoScreen = ({ videoUrl, width = 16, height = 9 }: VideoScreenProps) => {
+export const VideoScreen = ({
+  videoUrl,
+  width = 16,
+  height = 9,
+  position = [0, 0, 0],
+}: VideoScreenProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoTexture, setVideoTexture] = useState<THREE.VideoTexture | null>(null);
@@ -66,7 +72,7 @@ export const VideoScreen = ({ videoUrl, width = 16, height = 9 }: VideoScreenPro
   // Video funcionando correctamente ✅
 
   return (
-    <group ref={meshRef}>
+    <group ref={meshRef} position={position}>
       {/* Pantalla del video - simplificada */}
       <mesh position={[0, 0, 0]}>
         <planeGeometry args={[width, height]} />

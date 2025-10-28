@@ -13,8 +13,8 @@ export interface Track {
 export const localTracks: Track[] = [
     {
         id: '1',
-        title: 'The Legends (Clean Version)',
-        artist: 'Xavy Rusan',
+        title: 'ES_Bang Bang - Matt Large',
+        artist: 'Bang Bang',
         album: 'Resonancia Collection',
         duration: 180,
         cover: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=entropy',
@@ -22,7 +22,7 @@ export const localTracks: Track[] = [
     },
     {
         id: '2',
-        title: 'Hideout (Instrumental Version)',
+        title: 'ES_Don\'t Test Me (Clean Version) - Iso Indies',
         artist: 'Katori Walker',
         album: 'Resonancia Collection',
         duration: 200,
@@ -31,8 +31,8 @@ export const localTracks: Track[] = [
     },
     {
         id: '3',
-        title: 'Good Company (Clean Version)',
-        artist: 'Nyck Caution',
+        title: 'ES_Libations (Instrumental Version) - Xavy Rusan',
+        artist: 'Libations',
         album: 'Resonancia Collection',
         duration: 220,
         cover: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop&crop=entropy',
@@ -44,7 +44,7 @@ export const localTracks: Track[] = [
         artist: 'Sarah, the Illstrumentalist',
         album: 'Resonancia Collection',
         duration: 195,
-        cover: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=300&h=300&fit=crop&crop=entropy',
+        cover: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=entropy',
         audioUrl: '/audio/4.mp3'
     },
     {
@@ -89,7 +89,7 @@ export const localTracks: Track[] = [
         artist: 'Aiyo',
         album: 'Resonancia Collection',
         duration: 240,
-        cover: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=300&h=300&fit=crop&crop=entropy',
+        cover: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=entropy',
         audioUrl: '/audio/9.mp3'
     },
     {

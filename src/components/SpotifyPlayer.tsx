@@ -218,37 +218,41 @@ export const SpotifyPlayer = ({ currentTrack }: SpotifyPlayerProps) => {
         </div>
 
         {/* Main player content */}
-        <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center justify-between px-2 md:px-4 py-2">
           {/* Track info */}
-          <div className="flex items-center space-x-3 flex-1 min-w-0">
+          <div className="flex items-center space-x-2 md:space-x-3 flex-1 min-w-0">
             <img
               src={currentTrack.cover}
               alt={currentTrack.album}
-              className="w-14 h-14 rounded object-cover"
+              className="w-10 h-10 md:w-14 md:h-14 rounded object-cover"
             />
             <div className="min-w-0">
-              <p className="text-white text-sm font-medium truncate flex items-center">
+              <p className="text-white text-xs md:text-sm font-medium truncate flex items-center">
                 {currentTrack.title}
-                {!audioReady && <span className="ml-2 text-xs text-yellow-400">(Cargando...)</span>}
+                {!audioReady && (
+                  <span className="ml-1 md:ml-2 text-xs text-yellow-400 hidden md:inline">
+                    (Cargando...)
+                  </span>
+                )}
               </p>
               <p className="text-gray-400 text-xs truncate">{currentTrack.artist}</p>
             </div>
           </div>
 
           {/* Player controls */}
-          <div className="flex items-center space-x-4 flex-1 justify-center">
+          <div className="flex items-center space-x-2 md:space-x-4 flex-1 justify-center">
             <button
               onClick={() => setIsShuffled(!isShuffled)}
               className={`text-xs ${
                 isShuffled ? 'text-green-500' : 'text-gray-400'
-              } hover:text-white transition-colors`}
+              } hover:text-white transition-colors hidden md:block`}
               disabled={!audioReady}>
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M14.83 13.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13zM14.5 4l2.04 2.04L13.41 9.17l1.41 1.41L17.96 7.46 20 9.5V4h-5.5zm-9.46 5.17L6.46 8.04 4 5.5V11h5.5L7.46 8.96l1.09-1.09L10.59 9.9l-1.41 1.41L7.04 9.17z" />
               </svg>
             </button>
 
-            <button className="text-gray-400 hover:text-white transition-colors">
+            <button className="text-gray-400 hover:text-white transition-colors hidden md:block">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
               </svg>
@@ -279,7 +283,7 @@ export const SpotifyPlayer = ({ currentTrack }: SpotifyPlayerProps) => {
               )}
             </button>
 
-            <button className="text-gray-400 hover:text-white transition-colors">
+            <button className="text-gray-400 hover:text-white transition-colors hidden md:block">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
               </svg>
@@ -291,7 +295,7 @@ export const SpotifyPlayer = ({ currentTrack }: SpotifyPlayerProps) => {
               }
               className={`text-xs ${
                 repeatMode !== 'off' ? 'text-green-500' : 'text-gray-400'
-              } hover:text-white transition-colors relative`}>
+              } hover:text-white transition-colors relative hidden md:block`}>
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
               </svg>

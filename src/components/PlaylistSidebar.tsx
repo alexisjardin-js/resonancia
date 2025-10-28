@@ -27,26 +27,39 @@ export const PlaylistSidebar = ({ tracks, currentTrack, onTrackSelect }: Playlis
 
   if (isCollapsed) {
     return (
-      <div className="fixed right-0 top-0 bottom-20 w-12 bg-black border-l border-gray-800 z-30 flex flex-col">
+      <>
+        {/* Desktop collapsed sidebar */}
+        <div className="fixed right-0 top-0 bottom-20 w-12 bg-black border-l border-gray-800 z-30 flex-col hidden md:flex">
+          <button
+            onClick={() => setIsCollapsed(false)}
+            className="p-4 text-gray-400 hover:text-white transition-colors border-b border-gray-800">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          <div className="flex-1 flex flex-col items-center justify-center space-y-4">
+            <svg className="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Floating button for mobile and desktop */}
         <button
           onClick={() => setIsCollapsed(false)}
-          className="p-4 text-gray-400 hover:text-white transition-colors border-b border-gray-800">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-
-        <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-          <svg className="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+          className="fixed lg:hidden top-4 right-4 z-40 bg-black/80 hover:bg-black text-white p-3 rounded-full shadow-lg border border-gray-700 backdrop-blur-sm transition-colors"
+          aria-label="Abrir playlist">
+          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
           </svg>
-        </div>
-      </div>
+        </button>
+      </>
     );
   }
 
   return (
-    <div className="fixed right-0 top-0 bottom-20 w-96 bg-black border-l border-gray-800 z-30 flex flex-col">
+    <div className="fixed right-0 top-0 bottom-20 w-full md:w-96 bg-black border-l border-gray-800 z-30 flex flex-col">
       {/* Header */}
       <div className="p-4 border-b border-gray-800 flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -117,7 +130,7 @@ export const PlaylistSidebar = ({ tracks, currentTrack, onTrackSelect }: Playlis
       {/* Track list */}
       <div className="flex-1 overflow-y-auto">
         <div className="px-4 py-2">
-          <div className="grid grid-cols-12 gap-3 text-xs text-gray-400 border-b border-gray-800 pb-3 mb-4 px-3">
+          <div className="hidden md:grid grid-cols-12 gap-3 text-xs text-gray-400 border-b border-gray-800 pb-3 mb-4 px-3">
             <div className="col-span-1">#</div>
             <div className="col-span-7">Título</div>
             <div className="col-span-3">Álbum</div>
@@ -137,52 +150,87 @@ export const PlaylistSidebar = ({ tracks, currentTrack, onTrackSelect }: Playlis
             <div
               key={track.id}
               onClick={() => onTrackSelect(track)}
-              className={`grid grid-cols-12 gap-3 items-center py-3 px-3 mb-1 rounded cursor-pointer transition-colors group hover:bg-gray-800/50 ${
+              className={`flex md:grid md:grid-cols-12 gap-3 items-center py-3 px-3 mb-1 rounded cursor-pointer transition-colors group hover:bg-gray-800/50 ${
                 currentTrack?.id === track.id ? 'bg-gray-800/80' : ''
               }`}>
-              <div className="col-span-1 text-gray-400 text-sm">
-                {currentTrack?.id === track.id ? (
-                  <div className="w-4 h-4 flex items-center justify-center">
-                    <div className="w-3 h-3 bg-green-500 rounded animate-pulse"></div>
-                  </div>
-                ) : (
-                  <span className="group-hover:hidden">{index + 1}</span>
-                )}
-                <svg
-                  className="w-4 h-4 text-white hidden group-hover:block"
-                  fill="currentColor"
-                  viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-
-              <div className="col-span-7 min-w-0">
-                <div className="flex items-center space-x-4">
-                  <img
-                    src={track.cover}
-                    alt={track.album}
-                    className="w-12 h-12 rounded object-cover shrink-0"
-                  />
-                  <div className="min-w-0">
-                    <p
-                      className={`text-sm truncate ${
-                        currentTrack?.id === track.id ? 'text-green-500' : 'text-white'
-                      }`}>
-                      {track.title}
-                    </p>
-                    <p className="text-xs text-gray-400 truncate">{track.artist}</p>
-                  </div>
+              {/* Mobile layout */}
+              <div className="flex md:hidden items-center space-x-4 flex-1">
+                <div className="shrink-0">
+                  {currentTrack?.id === track.id ? (
+                    <div className="w-4 h-4 flex items-center justify-center">
+                      <div className="w-3 h-3 bg-green-500 rounded animate-pulse"></div>
+                    </div>
+                  ) : (
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  )}
                 </div>
-              </div>
-
-              <div className="col-span-3 min-w-0">
-                <p className="text-xs text-gray-400 truncate">{track.album}</p>
-              </div>
-
-              <div className="col-span-1 flex items-center justify-end">
-                <span className="text-xs text-gray-400 min-w-[35px] text-right">
+                <img
+                  src={track.cover}
+                  alt={track.album}
+                  className="w-12 h-12 rounded object-cover shrink-0"
+                />
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={`text-sm truncate ${
+                      currentTrack?.id === track.id ? 'text-green-500' : 'text-white'
+                    }`}>
+                    {track.title}
+                  </p>
+                  <p className="text-xs text-gray-400 truncate">{track.artist}</p>
+                </div>
+                <span className="text-xs text-gray-400 shrink-0">
                   {formatDuration(track.duration)}
                 </span>
+              </div>
+
+              {/* Desktop layout */}
+              <div className="hidden md:contents">
+                <div className="col-span-1 text-gray-400 text-sm">
+                  {currentTrack?.id === track.id ? (
+                    <div className="w-4 h-4 flex items-center justify-center">
+                      <div className="w-3 h-3 bg-green-500 rounded animate-pulse"></div>
+                    </div>
+                  ) : (
+                    <span className="group-hover:hidden">{index + 1}</span>
+                  )}
+                  <svg
+                    className="w-4 h-4 text-white hidden group-hover:block"
+                    fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+
+                <div className="col-span-7 min-w-0">
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={track.cover}
+                      alt={track.album}
+                      className="w-12 h-12 rounded object-cover shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <p
+                        className={`text-sm truncate ${
+                          currentTrack?.id === track.id ? 'text-green-500' : 'text-white'
+                        }`}>
+                        {track.title}
+                      </p>
+                      <p className="text-xs text-gray-400 truncate">{track.artist}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-span-3 min-w-0">
+                  <p className="text-xs text-gray-400 truncate">{track.album}</p>
+                </div>
+
+                <div className="col-span-1 flex items-center justify-end">
+                  <span className="text-xs text-gray-400 min-w-[35px] text-right">
+                    {formatDuration(track.duration)}
+                  </span>
+                </div>
               </div>
             </div>
           ))}

@@ -8,12 +8,26 @@ interface Scene3DProps {
 }
 
 export const Scene3D = ({ videoUrl }: Scene3DProps) => {
+  // Detectar si es móvil para ajustar tamaño del video
+  const isMobile =
+    typeof window !== 'undefined' &&
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  // Tamaños responsive para el video
+  const videoWidth = isMobile ? 4 : 16; // Mucho más pequeño en móvil (25% del tamaño original)
+  const videoHeight = isMobile ? 2.25 : 9; // Mantener proporción 16:9
+
+  // Ajustar cámara y posición según dispositivo
+  const cameraPosition: [number, number, number] = isMobile ? [0, 0, 6] : [0, 0, 10];
+  const fov = isMobile ? 45 : 75; // Campo de visión mucho más cerrado en móvil
+  const videoPosition: [number, number, number] = isMobile ? [0, 0, -3] : [0, 0, 0]; // Más hacia atrás en móvil
+
   return (
     <div className="w-full h-screen">
       <Canvas
         camera={{
-          position: [0, 0, 10],
-          fov: 75,
+          position: cameraPosition,
+          fov: fov,
         }}
         gl={{
           antialias: true,
@@ -28,8 +42,13 @@ export const Scene3D = ({ videoUrl }: Scene3DProps) => {
           <pointLight position={[0, 0, 15]} intensity={0.5} color="#ffffff" />
           <spotLight position={[5, 5, 10]} angle={0.3} penumbra={0.2} intensity={0.6} castShadow />
 
-          {/* Pantalla de video */}
-          <VideoScreen videoUrl={videoUrl} width={16} height={9} />
+          {/* Pantalla de video responsive */}
+          <VideoScreen
+            videoUrl={videoUrl}
+            width={videoWidth}
+            height={videoHeight}
+            position={videoPosition}
+          />
 
           {/* Control de cámara con mouse */}
           <MouseCameraController />
