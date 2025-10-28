@@ -1,10 +1,24 @@
-import { Scene3D } from './components';
-import { useEffect, useRef } from 'react';
+import { Scene3D, SpotifyPlayer, PlaylistSidebar } from './components';
+import { useEffect, useRef, useState } from 'react';
+import { type Track, localTracks } from './data/music';
+import { testAllAudioUrls } from './utils/audioHelpers';
 
 export const App = () => {
   // Video fijo desde la carpeta public/videos/
   const videoUrl = '/videos/video.mp4';
   const backgroundRef = useRef<HTMLDivElement>(null);
+
+  // Estado para el reproductor de música
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(localTracks[0]);
+
+  const handleTrackSelect = (track: Track) => {
+    setCurrentTrack(track);
+  };
+
+  // Debug: verificar archivos de audio
+  useEffect(() => {
+    testAllAudioUrls(localTracks);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
@@ -53,10 +67,20 @@ export const App = () => {
         </div>
 
         {/* Instrucciones */}
-        <div className="absolute bottom-4 left-4 right-4 z-20 bg-black/80 text-white p-3 rounded-lg text-center text-sm">
+        <div className="absolute bottom-28 left-4 right-[400px] z-20 bg-black/80 text-white p-3 rounded-lg text-center text-sm">
           <p>🖱️ Mueve el mouse para cambiar la perspectiva de la cámara y el parallax del fondo</p>
         </div>
       </div>
+
+      {/* Playlist Sidebar */}
+      <PlaylistSidebar
+        tracks={localTracks}
+        currentTrack={currentTrack}
+        onTrackSelect={handleTrackSelect}
+      />
+
+      {/* Reproductor de Spotify */}
+      <SpotifyPlayer currentTrack={currentTrack} />
     </>
   );
 };

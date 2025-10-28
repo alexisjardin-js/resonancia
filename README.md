@@ -1,81 +1,98 @@
-# Aplicación de Video 3D with Three.js & React
+# 🎵 Resonancia - Reproductor de Música con Video 3D
 
-Una aplicación web interactiva que reproduce videos en una pantalla 3D con control de cámara mediante el movimiento del mouse.
+Una aplicación web interactiva que combina un reproductor de música estilo Spotify con una experiencia visual 3D inmersiva.
 
-## Características
+## ✨ Características Principales
 
-- 🎥 Reproducción de videos en una pantalla 3D
-- 🖱️ Control de perspectiva de cámara con el mouse
-- 📱 Interfaz responsive con controles personalizados
-- 📂 Soporte para videos locales y URLs
-- 🎛️ Controles de interfaz ocultables
+- 🎵 **Reproductor estilo Spotify** con controles completos
+- 📱 **Playlist sidebar** colapsible con lista de canciones
+- 🎥 **Video 3D** en escena Three.js con audio silenciado
+- 🖱️ **Control de cámara** mediante movimiento del mouse
+- 🌟 **Efecto parallax** en el fondo
+- 🎧 **Música local** desde archivos MP3
 
-Currently, two official plugins are available:
+## 🎶 Funcionalidades del Reproductor
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ▶️ Play/Pausa con controles visuales
+- ⏮️⏭️ Botones anterior/siguiente
+- 🔀 Modo aleatorio (shuffle)
+- 🔁 Modo repetición (off/one/all)
+- 🔊 Control de volumen con slider
+- 📊 Barra de progreso interactiva
+- ❤️ Botón de favoritos
+- 🎨 Portadas de álbumes dinámicas
 
-## React Compiler
+## 📁 Cómo Agregar Música
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+### 1. **Agrega archivos MP3**
+Coloca tus archivos de audio en la carpeta `public/audio/`:
+```
+public/audio/
+├── cancion1.mp3
+├── cancion2.mp3
+├── cancion3.mp3
+├── cancion4.mp3
+└── cancion5.mp3
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. **Actualiza la configuración**
+Edita `src/data/music.ts` con la información de tus canciones:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default defineConfig([
-  globalIgnores(['dist']),
+```typescript
+export const localTracks: Track[] = [
   {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+    id: '1',
+    title: 'Tu Canción Favorita',
+    artist: 'Tu Artista',
+    album: 'Tu Álbum',
+    duration: 180, // segundos
+    cover: 'https://tu-portada.jpg',
+    audioUrl: '/audio/tu-archivo.mp3'
+  }
+  // ... más canciones
+];
 ```
+
+## 🚀 Instalación y Uso
+
+```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar en desarrollo
+npm run dev
+
+# Construir para producción
+npm run build
+```
+
+## 🎨 Estructura del Proyecto
+
+```
+src/
+├── components/
+│   ├── SpotifyPlayer.tsx     # Reproductor principal
+│   ├── PlaylistSidebar.tsx   # Lista de canciones
+│   ├── Scene3D.tsx           # Escena Three.js
+│   └── VideoScreen.tsx       # Pantalla de video
+├── data/
+│   └── music.ts              # Configuración de canciones
+└── App.tsx                   # Componente principal
+```
+
+## 🛠️ Tecnologías
+
+- **React 19** + **TypeScript**
+- **Three.js** + **React Three Fiber**
+- **Vite** para desarrollo rápido
+- **Tailwind CSS** para estilos
+- **Audio HTML5** para reproducción
+
+## 🎯 Características Técnicas
+
+- ✅ Reproducción de audio local
+- ✅ Controles de reproducción completos
+- ✅ Interfaz responsive
+- ✅ Efectos visuales 3D
+- ✅ Sin dependencias de APIs externas
+- ✅ Fácil personalización

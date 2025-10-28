@@ -14,14 +14,12 @@ export const VideoScreen = ({ videoUrl, width = 16, height = 9 }: VideoScreenPro
   const [videoTexture, setVideoTexture] = useState<THREE.VideoTexture | null>(null);
 
   useEffect(() => {
-    console.log('🎬 Iniciando VideoScreen para:', videoUrl);
-
     // Crear video element
     const video = document.createElement('video');
     video.src = videoUrl;
     video.loop = true;
-    video.muted = false;
-    video.volume = 0.6; // Volumen al 60%
+    video.muted = true;
+    video.volume = 0; // Silenciado completamente
     video.playsInline = true;
     video.autoplay = true;
     video.style.display = 'none';
@@ -34,8 +32,6 @@ export const VideoScreen = ({ videoUrl, width = 16, height = 9 }: VideoScreenPro
     const setupVideoTexture = () => {
       // Solo crear textura cuando el video tenga datos válidos
       if (video.readyState >= 2 && video.videoWidth > 0) {
-        console.log('📊 Video listo - dimensiones:', video.videoWidth, 'x', video.videoHeight);
-
         const texture = new THREE.VideoTexture(video);
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
@@ -43,17 +39,12 @@ export const VideoScreen = ({ videoUrl, width = 16, height = 9 }: VideoScreenPro
         texture.generateMipmaps = false; // Evitar warnings WebGL
 
         setVideoTexture(texture);
-        console.log('✨ VideoTexture creada con datos válidos');
       }
 
       // Reproducir video
-      video
-        .play()
-        .then(() => console.log('✅ Video playing'))
-        .catch(() => {
-          console.log('⚠️ Click to play');
-          document.addEventListener('click', () => video.play(), { once: true });
-        });
+      video.play().catch(() => {
+        document.addEventListener('click', () => video.play(), { once: true });
+      });
     };
 
     video.addEventListener('canplay', setupVideoTexture);
@@ -64,7 +55,7 @@ export const VideoScreen = ({ videoUrl, width = 16, height = 9 }: VideoScreenPro
       if (video.parentNode) document.body.removeChild(video);
       if (videoTexture) videoTexture.dispose();
     };
-  }, [videoUrl]); // videoTexture se maneja internamente
+  }, [videoUrl, videoTexture]);
 
   useFrame(() => {
     if (videoTexture) {
