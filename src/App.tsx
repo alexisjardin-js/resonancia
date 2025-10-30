@@ -1,4 +1,4 @@
-import { SpotifyPlayer, PlaylistSidebar } from './components';
+import { SpotifyPlayer, PlaylistSidebar, Scene3D } from './components';
 import { useEffect, useRef, useState } from 'react';
 import { type Track, localTracks } from './data/music';
 
@@ -118,8 +118,9 @@ export const App = () => {
             transformOrigin: 'center center',
           }}
           aria-hidden>
+          {/* Video solo en desktop (md y mayor) */}
           <video
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover hidden md:block"
             src={videoUrl}
             autoPlay
             loop
@@ -128,24 +129,31 @@ export const App = () => {
             preload="auto"
             style={{ pointerEvents: 'none' }}
           />
+
+          {/* Imagen solo en móvil (menor que md) */}
+          <img
+            src="./images/fondo.jpg"
+            alt="fondo"
+            className="absolute inset-0 w-full h-full object-cover md:hidden"
+          />
           {/* Overlay opcional para contraste:
           <div className="absolute inset-0 bg-black/20" /> */}
         </div>
 
-        {/* Escena 3D (si la usás) */}
-        {/* <div className="absolute inset-0 z-10">
+        {/* Escena 3D solo en móvil - ajustado al área del video */}
+        <div className="absolute inset-0 h-[calc(100vh-80px)] z-10 md:hidden">
           <Scene3D videoUrl={videoUrl} />
-        </div> */}
+        </div>
 
         {/* Instrucciones */}
         <div className="absolute bottom-4 md:bottom-28 left-4 right-4 md:right-[400px] z-20 bg-black/80 text-white p-3 rounded-lg text-center text-sm">
           <p className="hidden md:block">
-            🖱️ Mueve el mouse para cambiar la perspectiva de la cámara y el parallax del fondo
+            🖱️ Mueve el mouse para cambiar la perspectiva del video de fondo
           </p>
           <div className="md:hidden space-y-1">
             <p>🎵 Toca una canción del menú para reproducir</p>
             <p className="text-xs text-gray-300">
-              📱 Inclina el dispositivo o desliza el dedo para mover el fondo
+              📱 Inclina el dispositivo o desliza el dedo para mover la cámara 3D
             </p>
           </div>
         </div>

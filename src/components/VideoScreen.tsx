@@ -20,7 +20,7 @@ export const VideoScreen = ({
   const [videoTexture, setVideoTexture] = useState<THREE.VideoTexture | null>(null);
 
   useEffect(() => {
-    // Crear video element
+    // Crear video element con configuración optimizada para autoplay
     const video = document.createElement('video');
     video.src = videoUrl;
     video.loop = true;
@@ -28,13 +28,33 @@ export const VideoScreen = ({
     video.volume = 0; // Silenciado completamente
     video.playsInline = true;
     video.autoplay = true;
+    video.preload = 'auto';
     video.style.display = 'none';
 
     // Agregar al DOM
     document.body.appendChild(video);
     videoRef.current = video;
 
-    // Reproducir y crear textura cuando esté listo
+    // Reproducir automáticamente al cargar
+    const startAutoplay = () => {
+      video.play().catch((error) => {
+        console.log('Video autoplay failed, waiting for user interaction:', error);
+        // Intentar reproducir en cualquier interacción del usuario
+        const playOnInteraction = () => {
+          video
+            .play()
+            .then(() => {
+              console.log('Video started playing after user interaction');
+            })
+            .catch(console.error);
+        };
+
+        document.addEventListener('click', playOnInteraction, { once: true });
+        document.addEventListener('touchstart', playOnInteraction, { once: true });
+      });
+    };
+
+    // Crear textura cuando esté listo
     const setupVideoTexture = () => {
       // Solo crear textura cuando el video tenga datos válidos
       if (video.readyState >= 2 && video.videoWidth > 0) {
@@ -47,10 +67,8 @@ export const VideoScreen = ({
         setVideoTexture(texture);
       }
 
-      // Reproducir video
-      video.play().catch(() => {
-        document.addEventListener('click', () => video.play(), { once: true });
-      });
+      // Intentar reproducir inmediatamente
+      startAutoplay();
     };
 
     video.addEventListener('canplay', setupVideoTexture);
@@ -59,13 +77,27 @@ export const VideoScreen = ({
 
     return () => {
       if (video.parentNode) document.body.removeChild(video);
-      if (videoTexture) videoTexture.dispose();
+      videoRef.current = null;
     };
-  }, [videoUrl, videoTexture]);
+  }, [videoUrl]);
+
+  // Limpiar textura al desmontar
+  useEffect(() => {
+    return () => {
+      if (videoTexture) {
+        videoTexture.dispose();
+      }
+    };
+  }, [videoTexture]);
 
   useFrame(() => {
     if (videoTexture) {
       videoTexture.needsUpdate = true;
+    }
+
+    // Asegurar que el video siga reproduciéndose
+    if (videoRef.current && videoRef.current.paused) {
+      videoRef.current.play().catch(console.error);
     }
   });
 
@@ -76,8 +108,21 @@ export const VideoScreen = ({
       {/* Pantalla del video - simplificada */}
       <mesh position={[0, 0, 0]}>
         <planeGeometry args={[width, height]} />
-        <meshBasicMaterial map={videoTexture} side={THREE.DoubleSide} transparent={!videoTexture} />
+        <meshBasicMaterial
+          map={videoTexture}
+          side={THREE.DoubleSide}
+          transparent={!videoTexture}
+          color={videoTexture ? '#ffffff' : '#333333'} // Gris si no hay video
+        />
       </mesh>
+
+      {/* Indicador de carga si no hay video */}
+      {!videoTexture && (
+        <mesh position={[0, 0, 0.01]}>
+          <planeGeometry args={[2, 1]} />
+          <meshBasicMaterial color="#1db954" transparent opacity={0.8} />
+        </mesh>
+      )}
 
       {/* Cristal protector sutil */}
       <mesh position={[0, 0, 0.05]}>
